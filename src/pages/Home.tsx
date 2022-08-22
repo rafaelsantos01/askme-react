@@ -5,8 +5,10 @@ import "../styles/auth.scss";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { FormEvent, useState } from "react";
 
 export function Home() {
+  const [newRoom, setNeewRoom] = useState("");
   const history = useNavigate();
   const { user, signInWithGoogle } = useAuth();
 
@@ -16,6 +18,8 @@ export function Home() {
     }
     history("/rooms/new");
   }
+
+  async function handleJoinRoom(event: FormEvent) {}
 
   return (
     <div id="page-auth">
@@ -35,8 +39,13 @@ export function Home() {
             Crie sua sala com o Google
           </Button>
           <div className="separator">ou entre em uma sala</div>
-          <form>
-            <input type="text" placeholder="Digite o código da sala" />
+          <form onSubmit={handleJoinRoom}>
+            <input
+              type="text"
+              placeholder="Digite o código da sala"
+              onChange={(event) => setNeewRoom(event.target.value)}
+              value={newRoom}
+            />
             <Button type="submit">Entrar na sala</Button>
           </form>
         </div>

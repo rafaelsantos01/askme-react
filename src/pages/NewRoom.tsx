@@ -2,11 +2,29 @@ import illustrationImg from "../assets/illustration.svg";
 import logoImg from "../assets/logo.svg";
 import { Button } from "../components/Button";
 import "../styles/auth.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { FormEvent, useState } from "react";
+import { database } from "../services/firebase";
 
 export function NewRoom() {
   const { user } = useAuth();
+  const [newRoom, setNeewRoom] = useState("");
+  const history = useNavigate();
+
+  async function handleCreateRoom(event: FormEvent) {
+    event.preventDefault();
+    if (newRoom.trim() === "") {
+      return;
+    }
+    const roomRef = database.ref("rooms");
+    const firebaseRoom = await roomRef.push({
+      tile: newRoom,
+      authorId: user?.id,
+    });
+
+    history(`/rooms/${firebaseRoom.key}`);
+  }
 
   return (
     <div id="page-auth">
@@ -20,12 +38,16 @@ export function NewRoom() {
       </aside>
       <main>
         <div className="main-content">
-          <h1>{user?.name}</h1>
           <img src={logoImg} alt="Letmeask" />
           <h2>Crie uma nova sala</h2>
 
-          <form>
-            <input type="text" placeholder="Nome da sala" />
+          <form onSubmit={handleCreateRoom}>
+            <input
+              type="text"
+              placeholder="Nome da sala"
+              onChange={(event) => setNeewRoom(event.target.value)}
+              value={newRoom}
+            />
             <Button type="submit">Criar Sala</Button>
           </form>
           <p>
@@ -35,4 +57,7 @@ export function NewRoom() {
       </main>
     </div>
   );
+}
+function useHistory() {
+  throw new Error("Function not implemented.");
 }
