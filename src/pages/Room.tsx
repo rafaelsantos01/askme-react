@@ -3,7 +3,7 @@ import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
 import "../styles/room.scss";
 import { useParams } from "react-router-dom";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { database } from "../services/firebase";
 
@@ -11,11 +11,58 @@ type RoomParams = {
   id: string;
 };
 
+type FirebaseQuetions = Record<
+  string,
+  {
+    author: {
+      name: string;
+      avatar: string;
+    };
+    content: string;
+    isAnswered: boolean;
+    isHighlighted: boolean;
+  }
+>;
+type Question = {
+  id: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  content: string;
+  isAnswered: boolean;
+  isHighlighted: boolean;
+};
+
 export function Room() {
   const { user } = useAuth();
   const params = useParams<RoomParams>();
   const [newQuestion, setnewQuestion] = useState("");
-  const roomid = params.id;
+  const roomId = params.id;
+  const [title, setTitle] = useState("");
+  const [questions, setQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    const roomRef = database.ref(`rooms/${roomId}`);
+
+    roomRef.on("value", (room) => {
+      const databaseRom = room.val();
+      const firebaseQuestions: FirebaseQuetions = databaseRom.questions ?? {};
+      const parsetQuestion = Object.entries(firebaseQuestions).map(
+        ([key, value]) => {
+          return {
+            id: key,
+            content: value.content,
+            author: value.author,
+            isAnswered: value.isAnswered,
+            isHighlighted: value.isHighlighted,
+          };
+        }
+      );
+      setTitle(databaseRom.title);
+      setQuestions(parsetQuestion);
+    });
+  }, [roomId]);
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -36,7 +83,7 @@ export function Room() {
       isAnswered: false,
     };
 
-    await database.ref(`rooms/${roomid}/questions`).push(question);
+    await database.ref(`rooms/${roomId}/questions`).push(question);
     setnewQuestion("");
   }
 
@@ -45,13 +92,13 @@ export function Room() {
       <header>
         <div className="content">
           <img src={logoImg} alt="LetMeAsk" />
-          <RoomCode code={roomid || ""} />
+          <RoomCode code={roomId || ""} />
         </div>
       </header>
       <main className="content">
         <div className="room-title">
-          <h1>Sala React</h1>
-          <span>4 Perguntas</span>
+          <h1>Sala {title}</h1>
+          {questions.length > 0 && <span>{questions.length} Perguntas</span>}
         </div>
         <form onSubmit={handleSendQuestion}>
           <textarea
@@ -60,14 +107,22 @@ export function Room() {
             value={newQuestion}
           />
           <div className="form-footer">
-            <span>
-              Para enviar uma pergunta, <button>faça seu login</button>
-            </span>
+            {user ? (
+              <div className="user-info">
+                <img src={user.avatar} />
+                <span>{user.name}</span>
+              </div>
+            ) : (
+              <span>
+                Para enviar uma pergunta, <button>faça seu login</button>
+              </span>
+            )}
             <Button type="submit" disabled={!user}>
               Enviar Pergunta
             </Button>
           </div>
         </form>
+        {JSON.stringify(questions)}
       </main>
     </div>
   );

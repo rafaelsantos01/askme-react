@@ -7,13 +7,19 @@ import "firebase/compat/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyC3evUvdo3o_0cHPNS6ipUYBdZALKzhgpc",
-  authDomain: "letmeask-quantus.firebaseapp.com",
-  databaseURL: "https://letmeask-quantus-default-rtdb.firebaseio.com",
-  projectId: "letmeask-quantus",
-  storageBucket: "letmeask-quantus.appspot.com",
-  messagingSenderId: "732287377857",
-  appId: "1:732287377857:web:28d82257c95ead7eb34f40",
+  apiKey: "AIzaSyClXsN50pHpMUe-uM8ro5eCwE3Kv1wLYA0",
+
+  authDomain: "nlw-letmeask-rafael.firebaseapp.com",
+
+  databaseURL: "https://nlw-letmeask-rafael-default-rtdb.firebaseio.com",
+
+  projectId: "nlw-letmeask-rafael",
+
+  storageBucket: "nlw-letmeask-rafael.appspot.com",
+
+  messagingSenderId: "964460420007",
+
+  appId: "1:964460420007:web:4e3182a29c03d0575a3482",
 };
 
 // Initialize Firebase
