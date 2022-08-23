@@ -19,22 +19,44 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 24px;
-  }
 
-  .user-info {
-    display: flex;
-    align-items: center;
-    img {
-      margin-bottom: 4px;
-      margin-left: 4px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
+    .user-info {
+      display: flex;
+      align-items: center;
+      img {
+        margin-bottom: 4px;
+        margin-left: 4px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+      > span {
+        margin-left: 8px;
+        color: #141415;
+        font-size: 14px;
+      }
     }
-    > span {
-      margin-left: 8px;
-      color: #141415;
-      font-size: 14px;
+
+    button {
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.2s;
+      &.like-button {
+        display: flex;
+        align-items: flex-end;
+        color: #737380;
+        gap: 8px;
+        &.like {
+          color: #835afd;
+          svg path {
+            stroke: #835afd;
+          }
+        }
+        &:hover {
+          filter: brightness(0.7);
+        }
+      }
     }
   }
 }
