@@ -24,7 +24,7 @@ type FirebaseQuetions = Record<
     isHighlighted: boolean;
   }
 >;
-type Question = {
+type Questionn = {
   id: string;
   author: {
     name: string;
@@ -41,7 +41,7 @@ export function Room() {
   const [newQuestion, setnewQuestion] = useState("");
   const roomId = params.id;
   const [title, setTitle] = useState("");
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<Questionn[]>([]);
 
   useEffect(() => {
     const roomRef = database.ref(`rooms/${roomId}`);
