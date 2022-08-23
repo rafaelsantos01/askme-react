@@ -9,7 +9,7 @@ import { database } from "../services/firebase";
 
 export function NewRoom() {
   const { user } = useAuth();
-  const [newRoom, setNeewRoom] = useState("");
+  const [newRoom, setNewRoom] = useState("");
   const history = useNavigate();
 
   async function handleCreateRoom(event: FormEvent) {
@@ -45,7 +45,7 @@ export function NewRoom() {
             <input
               type="text"
               placeholder="Nome da sala"
-              onChange={(event) => setNeewRoom(event.target.value)}
+              onChange={(event) => setNewRoom(event.target.value)}
               value={newRoom}
             />
             <Button type="submit">Criar Sala</Button>
@@ -57,7 +57,4 @@ export function NewRoom() {
       </main>
     </div>
   );
-}
-function useHistory() {
-  throw new Error("Function not implemented.");
 }
