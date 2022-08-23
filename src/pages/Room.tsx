@@ -109,7 +109,7 @@ export function Room() {
           <div className="form-footer">
             {user ? (
               <div className="user-info">
-                <img src={user.avatar} />
+                <img src={user.avatar} alt="Avatar" />
                 <span>{user.name}</span>
               </div>
             ) : (
